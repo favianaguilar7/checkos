@@ -99,3 +99,45 @@
   background-color: #FF8730;
   color: white;
 }
+
+.ordenar-container{
+  padding: 2% 4%;
+}
+
+.menu-header{
+  display: flex;
+  align-items: center;
+}
+
+.menu-title{
+  font-size: 34px;
+  width: 30%;
+}
+
+.filter-container{
+  width: 78%;
+  display: flex;
+  gap: 1.5%;
+}
+
+.filter-btn{
+  background-color: white;
+  border-radius: 25px;
+  padding: .7% 1.2%;
+  border: #FF8730 2px solid;
+  color: #FF8730;
+}
+
+.selected-filter{
+  border-radius: 25px;
+  padding: .7% 1.2%;
+  color: white;
+  background-color: #FF8730;
+  border: #FF8730 2px solid;
+}
+
+.filter-btn:hover{
+  color: white;
+  background-color: #FF8730;
+  border: #FF8730 2px solid;
+}

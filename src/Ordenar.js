@@ -143,11 +143,12 @@ const Ordenar = () => {
     <div className="ordenar-container">
       <div className="menu-container">
         <div className='menu-header'>
-          <h1>Menú</h1>
+          <h1 className='impact-text menu-title'>Nuestro Menú</h1>
           <div className="filter-container">
-            <button onClick={() => setSelectedCategory('')}>Todos</button>
+            <button onClick={() => setSelectedCategory('')} className='filter-btn'>Todos</button>
             {categories.map((category, index) => (
-              <button key={index} onClick={() => setSelectedCategory(category)}>
+              <button key={index} onClick={() => setSelectedCategory(category)} 
+              className={selectedCategory === category ? 'selected-filter' : 'filter-btn'}>
                 {category}
               </button>
             ))}
@@ -157,7 +158,7 @@ const Ordenar = () => {
           {filteredMenuItems.map((item, index) => (
             <li key={index}>
               {item.Nombre} - ${item.Precio} 
-              {item.Dia && item.Dia == selectedDay && <span> - Promoción: {item.Promocion}</span>}
+              {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
               {item.Personalizacion && (
                 <div>
                   <label>Personalización:</label>

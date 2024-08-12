@@ -14,14 +14,15 @@ const Header = () => {
 
   return (
     <header className="header">
-      <nav>
+      <p className='impact-text nav-brand header-comp'>Checko's Burger</p>
+      <nav className='header-comp'>
         <ul>
-          <li><Link to="/ordenar">Ordenar</Link></li>
-          <li><Link to="/comandas">Comandas</Link></li>
-          <li><Link to="/caja">Caja</Link></li>
+          <li><Link className='white-text' to="/ordenar">Ordenar</Link></li>
+          <li><Link className='white-text' to="/comandas">Comandas</Link></li>
+          <li><Link className='white-text' to="/caja">Caja</Link></li>
         </ul>
       </nav>
-      <div className="username">
+      <div className="username header-comp">
         {username && <p>{username}</p>}
       </div>
     </header>

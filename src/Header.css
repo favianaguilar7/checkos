@@ -2,11 +2,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
+    padding: .8% 2%;
+    background-color: #FF8730;
     border-bottom: 1px solid #dee2e6;
+    text-align: center;
   }
   
+  .header-comp{
+    width: 33%;
+  }
+
+  .nav-brand{
+    font-size: 25px;
+  }
+
+  nav{
+    display: flex;
+    justify-content: center;
+  }
+
   nav ul {
     list-style: none;
     display: flex;
@@ -21,11 +35,11 @@
   
   nav ul li a {
     text-decoration: none;
-    color: #007bff;
+    font-size: 21px;
   }
   
   .username {
-    font-size: 1rem;
-    color: #333;
+    font-size: 21px;
+    color: white;
   }
   

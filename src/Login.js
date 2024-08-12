@@ -33,26 +33,37 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Inicio de Sesión</h2>
-      <div>
-        <label>Usuario: </label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+    <div className='login'>
+      <h1 className="impact-text login-title">Checko's Burger</h1>
+      <div className='login-content'>
+        <h2 className='white-text login-subtitle'>Iniciar Sesión</h2>
+        <div className='bottom-content'>
+          <div>
+            {/* <label>Usuario: </label> */}
+            <input
+              className='login-input'
+              type="text"
+              placeholder='Usuario'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            {/* <label>Contraseña: </label> */}
+            <input
+              className='login-input'
+              type="password"
+              placeholder='Contraseña'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className='btn-div'>
+            <button className='login-btn' onClick={handleLogin}>Entrar</button>
+          </div>
+          {errorMessage && <p>{errorMessage}</p>}
+          </div>
       </div>
-      <div>
-        <label>Contraseña: </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button onClick={handleLogin}>Entrar</button>
-      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
 };

@@ -141,18 +141,18 @@ const Ordenar = () => {
 
   return (
     <div className="ordenar-container">
-      <div className="filter-container">
-        <h2>Filtrar por Categoría</h2>
-        <button onClick={() => setSelectedCategory('')}>Todos</button>
-        {categories.map((category, index) => (
-          <button key={index} onClick={() => setSelectedCategory(category)}>
-            {category}
-          </button>
-        ))}
-      </div>
-
       <div className="menu-container">
-        <h1>Menú</h1>
+        <div className='menu-header'>
+          <h1>Menú</h1>
+          <div className="filter-container">
+            <button onClick={() => setSelectedCategory('')}>Todos</button>
+            {categories.map((category, index) => (
+              <button key={index} onClick={() => setSelectedCategory(category)}>
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
         <ul>
           {filteredMenuItems.map((item, index) => (
             <li key={index}>

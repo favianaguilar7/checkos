@@ -41,8 +41,7 @@ const Ordenar = () => {
         setOrderItems(tempOrder.items);
         setComment(tempOrder.comment || '');
         setOrderType(tempOrder.orderType || '');
-        // Eliminar la orden temporal del localStorage después de cargarla
-        localStorage.removeItem(tempOrderKey);
+        // No eliminar la orden temporal aquí para que pueda ser usada al guardar la orden
       }
     }
   }, []);
@@ -110,24 +109,70 @@ const Ordenar = () => {
     return orderItems.reduce((total, item) => total + item.quantity * item.Precio, 0);
   };
 
-  const handleSaveOrder = () => {
+  const handleSaveOrder = async () => {
     if (orderItems.length === 0 || !orderType) {
-      alert('Por favor, agrega productos y selecciona el tipo de orden.');
-      return;
+        alert('Por favor, agrega productos y selecciona el tipo de orden.');
+        return;
     }
 
-    const orderNumber = localStorage.length + 1; // Generar número de orden único
+    let newOrderNumber;
+    let allOrderNumbers = [];
+
+    // Verificar si hay una orden temporal
+    const tempOrderKey = Object.keys(localStorage).find(key => key.startsWith('temp'));
+    if (tempOrderKey) {
+      // Usar el número de la orden temporal
+      newOrderNumber = parseInt(tempOrderKey.replace('temp', ''), 10);
+
+      // Eliminar la orden temporal del localStorage
+      localStorage.removeItem(tempOrderKey);
+    } else {
+      // Verificar en localStorage
+      const localStorageKeys = Object.keys(localStorage).filter(key => key.startsWith('orden'));
+      let localOrderNumbers = localStorageKeys.map(key => {
+          const match = key.match(/orden(\d+)/);
+          return match ? parseInt(match[1], 10) : null;
+      }).filter(num => num !== null);
+
+      // Si hay números en localStorage, agregarlos a la lista de todos los números de orden
+      if (localOrderNumbers.length > 0) {
+          allOrderNumbers = [...localOrderNumbers];
+      }
+
+      // Verificar en el archivo .txt
+      const fileResponse = await fetch('/orders-file');
+      const fileContent = await fileResponse.text();
+
+      const orderNumbersInFile = Array.from(fileContent.matchAll(/Numero de Orden: (\d+)/g), m => parseInt(m[1], 10));
+
+      // Si hay números en el archivo, agregarlos a la lista de todos los números de orden
+      if (orderNumbersInFile.length > 0) {
+          allOrderNumbers = [...allOrderNumbers, ...orderNumbersInFile];
+      }
+
+      // Asignar el nuevo número de orden
+      if (allOrderNumbers.length > 0) {
+          allOrderNumbers.sort((a, b) => a - b);
+          newOrderNumber = Math.max(...allOrderNumbers) + 1;
+      } else {
+          newOrderNumber = 1;
+      }
+    }
+
+    // Guardar la orden en localStorage
     const orderData = {
-      orderNumber,
-      orderType,
-      comment,
-      items: orderItems.map(item => ({
-        ...item,
-        Personalizacion: item.Personalizacion || item.Personalizacion
-      })),
-      totalPrice: getTotalPrice()
+        orderNumber: newOrderNumber,
+        orderType,
+        comment,
+        items: orderItems.map(item => ({
+            ...item,
+            Personalizacion: item.Personalizacion || ''
+        })),
+        totalPrice: getTotalPrice()
     };
-    localStorage.setItem(`orden${orderNumber}`, JSON.stringify(orderData));
+
+    localStorage.setItem(`orden${newOrderNumber}`, JSON.stringify(orderData));
+
     // Limpiar el carrito después de guardar
     setOrderItems([]);
     setComment('');
@@ -135,7 +180,7 @@ const Ordenar = () => {
     setCustomOptions({});
     navigate('/comandas'); // Redirigir a la página de Comandas
   };
-
+  
   // Obtener las categorías únicas del menú
   const categories = Array.from(new Set(menuItems.map(item => item.Categoria)));
 
@@ -157,52 +202,60 @@ const Ordenar = () => {
         <ul>
           {filteredMenuItems.map((item, index) => (
             <li key={index}>
+              {/* Mostrar la imagen del producto */}
+              <img 
+                src={`/img/${item.Nombre.toLowerCase().replace(/\s+/g, '')}.png`} 
+                alt={item.Nombre} 
+                style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '10px' }}
+              />
               {item.Nombre} - ${item.Precio} 
               {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
               {item.Personalizacion && (
                 <div>
-                  <label>Personalización:</label>
                   <select onChange={(e) => handleCustomOptionChange(item, e.target.value)}>
                     <option value="">Seleccionar opción</option>
-                    {item.Personalizacion.split('.').map((option, i) => (
-                      <option key={i} value={option}>{option}</option>
+                    {item.Personalizacion.split('.').map((option, idx) => (
+                      <option key={idx} value={option}>{option}</option>
                     ))}
                   </select>
                 </div>
               )}
-              <button onClick={() => handleAddToOrder(item)}>Agregar</button>
+              <button onClick={() => handleAddToOrder(item)}>Añadir</button>
             </li>
           ))}
         </ul>
       </div>
-      <div className="order-container">
-        <h1>Orden</h1>
+      <div className="order-summary">
+        <h2>Resumen de Orden</h2>
         <ul>
           {orderItems.map((item, index) => (
             <li key={index}>
               {item.Nombre} - ${item.Precio} x {item.quantity}
-              {item.Personalizacion && <div>Personalización: {item.Personalizacion}</div>}
               <button onClick={() => handleIncreaseQuantity(item)}>+</button>
               <button onClick={() => handleDecreaseQuantity(item)}>-</button>
             </li>
           ))}
         </ul>
-        <div className="order-total">
-          <h2>Total: ${getTotalPrice().toFixed(2)}</h2>
+        <div>
+          Total: ${getTotalPrice().toFixed(2)}
         </div>
-        <div className="order-comment">
-          <label>Comentario:</label>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          ></textarea>
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Comentarios adicionales"
+        />
+        <div>
+          <label>
+            Tipo de Orden:
+            <select value={orderType} onChange={(e) => setOrderType(e.target.value)}>
+              <option value="">Selecciona el tipo</option>
+              <option value="mesa">Mesa</option>
+              <option value="recoger">Recoger</option>
+              <option value="domicilio">Domicilio</option>
+            </select>
+          </label>
         </div>
-        <div className="order-type">
-          <button onClick={() => setOrderType('mesa')}>Para Mesa</button>
-          <button onClick={() => setOrderType('recoger')}>Para Recoger</button>
-          <button onClick={() => setOrderType('domicilio')}>A Domicilio</button>
-        </div>
-        <button onClick={handleSaveOrder} disabled={!orderType}>Guardar Orden</button>
+        <button onClick={handleSaveOrder}>Guardar Orden</button>
       </div>
     </div>
   );

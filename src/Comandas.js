@@ -42,17 +42,46 @@ const Comandas = () => {
     }
   };
 
-  const handleFinishOrder = () => {
+  const handleFinishOrder = async () => {
     if (selectedOrder) {
-      // Eliminar la orden del localStorage
-      localStorage.removeItem(`orden${selectedOrder.orderNumber}`);
-      setOrders(orders.filter(order => order.orderNumber !== selectedOrder.orderNumber));
-      setSelectedOrder(null);
-      setShowPaymentOverlay(false);
-      setShowCashOverlay(false);
-      setPaymentMethod('');
-      setCashAmount(0);
-      setChange(0);
+        const orderDetails = {
+            orderNumber: selectedOrder.orderNumber,
+            items: selectedOrder.items,
+            totalPrice: selectedOrder.totalPrice,
+            paymentMethod: paymentMethod
+        };
+
+        try {
+            const response = await fetch('/save-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderDetails),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Orden guardada correctamente en el archivo ${result.fileName}`);
+
+                // Eliminar la orden del localStorage después de guardarla en el archivo
+                localStorage.removeItem(`orden${selectedOrder.orderNumber}`);
+            } else {
+                alert('Error al guardar la orden');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al conectar con el servidor');
+        }
+
+        // Limpiar estado
+        setOrders(orders.filter(order => order.orderNumber !== selectedOrder.orderNumber));
+        setSelectedOrder(null);
+        setShowPaymentOverlay(false);
+        setShowCashOverlay(false);
+        setPaymentMethod('');
+        setCashAmount(0);
+        setChange(0);
     }
   };
 
@@ -83,22 +112,22 @@ const Comandas = () => {
           selected: isItemSelected(itemId) // Añadimos el estado de selección al item
         };
       });
-
+  
       // Eliminar la orden actual del localStorage
       localStorage.removeItem(`orden${order.orderNumber}`);
-
+  
       // Crear una nueva orden con un nombre basado en `temp`
-      const newOrderNumber = `temp${order.orderNumber}`;
-
+      const tempOrderNumber = `temp${order.orderNumber}`;
+  
       // Actualizar el localStorage con la nueva orden
       const updatedOrderData = {
         ...order,
-        orderNumber: newOrderNumber,
+        orderNumber: tempOrderNumber,
         items: updatedItems
       };
-
-      localStorage.setItem(newOrderNumber, JSON.stringify(updatedOrderData));
-
+  
+      localStorage.setItem(tempOrderNumber, JSON.stringify(updatedOrderData));
+  
       // Redirigir a la página de Ordenar
       navigate('/ordenar');
     } else {
@@ -123,13 +152,8 @@ const Comandas = () => {
                 const itemId = `${order.orderNumber}_${idx}`;
                 return (
                   <li key={itemId}>
-                    <input
-                      type="checkbox"
-                      checked={isItemSelected(itemId)}
-                      onChange={() => handleCheckboxChange(itemId)}
-                    />
                     {item.Nombre} - ${item.Precio} x {item.quantity}
-                    {item.Personalizacion && <div>Personalización: {item.Personalizacion}</div>}
+                    {item.Personalizacion && <div>{item.Personalizacion}</div>}
                   </li>
                 );
               })}

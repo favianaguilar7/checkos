@@ -1,0 +1,14 @@
+
+Numero de Orden: 1
+Fecha: 13/8/2024
+Metodo de Pago: efectivo
+Productos:
+Refresco - 30 x 1
+Total Pagado: 30
+
+Numero de Orden: 3
+Fecha: 13/8/2024
+Metodo de Pago: efectivo
+Productos:
+Mini Hamburguesa - 45 x 4
+Total Pagado: 180

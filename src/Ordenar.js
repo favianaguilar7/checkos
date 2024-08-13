@@ -244,18 +244,32 @@ const Ordenar = () => {
           onChange={(e) => setComment(e.target.value)}
           placeholder="Comentarios adicionales"
         />
-        <div>
-          <label>
-            Tipo de Orden:
-            <select value={orderType} onChange={(e) => setOrderType(e.target.value)}>
-              <option value="">Selecciona el tipo</option>
-              <option value="mesa">Mesa</option>
-              <option value="recoger">Recoger</option>
-              <option value="domicilio">Domicilio</option>
-            </select>
-          </label>
+        <div className="order-type">
+          <button
+            onClick={() => setOrderType('mesa')}
+            className={orderType === 'mesa' ? 'selected-type' : 'order-type-btn'}
+          >
+            Para Mesa
+          </button>
+          <button
+            onClick={() => setOrderType('recoger')}
+            className={orderType === 'recoger' ? 'selected-type' : 'order-type-btn'}
+          >
+            Para Recoger
+          </button>
+          <button
+            onClick={() => setOrderType('domicilio')}
+            className={orderType === 'domicilio' ? 'selected-type' : 'order-type-btn'}
+          >
+            A Domicilio
+          </button>
         </div>
-        <button onClick={handleSaveOrder}>Guardar Orden</button>
+        <button
+          onClick={handleSaveOrder}
+          disabled={!orderType} // Deshabilitar el botón si no se ha seleccionado un tipo de orden
+        >
+          Guardar Orden
+        </button>
       </div>
     </div>
   );

@@ -1,14 +1,50 @@
 
 Numero de Orden: 1
 Fecha: 13/8/2024
+Hora: 16:46:00
 Metodo de Pago: efectivo
 Productos:
-Refresco - 30 x 1
-Total Pagado: 30
+Hamburguesa Clasica - 65 x 3
+Total Pagado: 195
+
+Numero de Orden: 2
+Fecha: 13/8/2024
+Hora: 16:49:02
+Metodo de Pago: efectivo
+Productos:
+Hamburguesa Clasica - 65 x 3
+Total Pagado: 195
+
+=== Corte de Caja ===
+Fecha de Apertura: 1382024
+Hora de Cierre: 4:58:51 p.m.
+Usuario: user1
+Dinero en Efectivo: 400
+Dinero en Tarjeta: 0
+Diferencia: 10.00
+Comentario: 
+==============================
 
 Numero de Orden: 3
 Fecha: 13/8/2024
+Hora: 18:05:02
 Metodo de Pago: efectivo
 Productos:
-Mini Hamburguesa - 45 x 4
-Total Pagado: 180
+Hamburguesa Clasica - 65 x 1
+Total Pagado: 65
+
+Numero de Orden: 4
+Fecha: 13/8/2024
+Hora: 18:08:30
+Metodo de Pago: 
+Productos:
+Hamburguesa Clasica - 65 x 1
+Total Pagado: 65
+
+Numero de Orden: 5
+Fecha: 13/8/2024
+Hora: 18:15:53
+Metodo de Pago: tarjeta
+Productos:
+Hamburguesa Clasica - 65 x 1
+Total Pagado: 65

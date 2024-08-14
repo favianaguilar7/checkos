@@ -6,11 +6,13 @@ const Comandas = () => {
   const [orders, setOrders] = useState([]);
   const [showPaymentOverlay, setShowPaymentOverlay] = useState(false);
   const [showCashOverlay, setShowCashOverlay] = useState(false);
+  const [showCardOverlay, setShowCardOverlay] = useState(false); // Nuevo estado para overlay de tarjeta
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [cashAmount, setCashAmount] = useState(0);
   const [change, setChange] = useState(0);
   const [selectedItems, setSelectedItems] = useState({}); // Para almacenar los productos seleccionados
+  const [cardNumber, setCardNumber] = useState('1234567890123456'); // Número de tarjeta predeterminado
 
   const navigate = useNavigate(); // Hook para redirigir
 
@@ -33,9 +35,9 @@ const Comandas = () => {
 
   const handlePaymentMethod = (method) => {
     setPaymentMethod(method);
-    if (method === 'transferencia') {
-      alert('Continúa con el cajero');
-      handleFinishOrder();
+    if (method === 'tarjeta') {
+      setShowPaymentOverlay(false);
+      setShowCardOverlay(true);
     } else {
       setShowPaymentOverlay(false);
       setShowCashOverlay(true);
@@ -62,16 +64,13 @@ const Comandas = () => {
 
             if (response.ok) {
                 const result = await response.json();
-                alert(`Orden guardada correctamente en el archivo ${result.fileName}`);
 
                 // Eliminar la orden del localStorage después de guardarla en el archivo
                 localStorage.removeItem(`orden${selectedOrder.orderNumber}`);
             } else {
-                alert('Error al guardar la orden');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al conectar con el servidor');
         }
 
         // Limpiar estado
@@ -79,6 +78,7 @@ const Comandas = () => {
         setSelectedOrder(null);
         setShowPaymentOverlay(false);
         setShowCashOverlay(false);
+        setShowCardOverlay(false);
         setPaymentMethod('');
         setCashAmount(0);
         setChange(0);
@@ -170,7 +170,7 @@ const Comandas = () => {
           <div className="overlay-content">
             <h2>Selecciona el método de pago</h2>
             <button onClick={() => handlePaymentMethod('efectivo')}>Efectivo</button>
-            <button onClick={() => handlePaymentMethod('transferencia')}>Transferencia</button>
+            <button onClick={() => handlePaymentMethod('tarjeta')}>Tarjeta</button>
           </div>
         </div>
       )}
@@ -189,6 +189,17 @@ const Comandas = () => {
               />
             </label>
             <p>Cambio: ${change.toFixed(2)}</p>
+            <button onClick={handleFinishOrder}>Terminar</button>
+          </div>
+        </div>
+      )}
+
+      {showCardOverlay && (
+        <div className="overlay">
+          <div className="overlay-content">
+            <h2>Información del Pago con Tarjeta</h2>
+            <p>Total a pagar: ${selectedOrder.totalPrice.toFixed(2)}</p>
+            <p><strong>Número de Tarjeta:</strong> {cardNumber}</p>
             <button onClick={handleFinishOrder}>Terminar</button>
           </div>
         </div>

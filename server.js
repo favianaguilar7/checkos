@@ -57,6 +57,7 @@ app.post('/save-order', (req, res) => {
     const orderDetails = `
 Numero de Orden: ${orderNumber}
 Fecha: ${new Date().toLocaleDateString()}
+Hora: ${new Date().toLocaleTimeString()}
 Metodo de Pago: ${paymentMethod}
 Productos:
 ${items.map(item => `${item.Nombre} - ${item.Precio} x ${item.quantity}`).join('\n')}
@@ -69,6 +70,46 @@ Total Pagado: ${totalPrice}
             res.status(500).send('Error al guardar la orden');
         } else {
             res.json({ fileName });
+        }
+    });
+});
+
+app.get('/transactions-today', (req, res) => {
+    const today = new Date().toLocaleDateString().replace(/\//g, '');
+    const fileName = `orden_${today}.txt`;
+    const filePath = path.join(dir, fileName);
+
+    if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        res.send(fileContent);
+    } else {
+        res.send(''); // Si no hay transacciones, devolver una cadena vacía
+    }
+});
+
+app.post('/save-corte', (req, res) => {
+    const { corteNumber, openingDate, closingTime, username, cash, card, difference, comment } = req.body;
+    const fileName = `orden_${corteNumber}.txt`;
+    const filePath = path.join(dir, fileName);
+
+    const corteDetails = `
+=== Corte de Caja ===
+Fecha de Apertura: ${openingDate}
+Hora de Cierre: ${closingTime}
+Usuario: ${username}
+Dinero en Efectivo: ${cash}
+Dinero en Tarjeta: ${card}
+Diferencia: ${difference}
+Comentario: ${comment}
+==============================
+`;
+
+    fs.appendFile(filePath, corteDetails, (err) => {
+        if (err) {
+            console.error('Error al guardar el corte de caja:', err);
+            res.status(500).send('Error al guardar el corte de caja');
+        } else {
+            res.json({ message: 'Corte de caja guardado exitosamente' });
         }
     });
 });

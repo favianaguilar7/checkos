@@ -17,9 +17,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-  "client": "PORT=3001 react-scripts start",
-  "server": "node server.js",
-  "start": "concurrently \"npm run client\" \"npm run server\""
+    "client": "PORT=3001 react-scripts start",
+    "server": "node server.js",
+    "start": "react-scripts start"
   },
   "eslintConfig": {
     "extends": [

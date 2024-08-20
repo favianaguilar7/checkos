@@ -199,77 +199,85 @@ const Ordenar = () => {
             ))}
           </div>
         </div>
-        <ul>
+        <ul className='product-list'>
           {filteredMenuItems.map((item, index) => (
-            <li key={index}>
+            <li className='product-container' key={index}>
               {/* Mostrar la imagen del producto */}
-              <img 
-                src={`/img/${item.Nombre.toLowerCase().replace(/\s+/g, '')}.png`} 
-                alt={item.Nombre} 
-                style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '10px' }}
-              />
-              {item.Nombre} - ${item.Precio} 
-              {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
-              {item.Personalizacion && (
-                <div>
-                  <select onChange={(e) => handleCustomOptionChange(item, e.target.value)}>
-                    <option value="">Seleccionar opción</option>
-                    {item.Personalizacion.split('.').map((option, idx) => (
-                      <option key={idx} value={option}>{option}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              <button onClick={() => handleAddToOrder(item)}>Añadir</button>
+              <div className="product">
+                <img 
+                  src={`/img/${item.Nombre.toLowerCase().replace(/\s+/g, '')}.png`} 
+                  alt={item.Nombre} 
+                  style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '10px' }}
+                />
+                <p>{item.Nombre} - <b className='orange-text'>$</b>{item.Precio}</p>
+                {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
+                {item.Personalizacion && (
+                  <div>
+                    <select onChange={(e) => handleCustomOptionChange(item, e.target.value)}>
+                      <option value="">Seleccionar opción</option>
+                      {item.Personalizacion.split('.').map((option, idx) => (
+                        <option key={idx} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                <button className='add-btn' onClick={() => handleAddToOrder(item)}>Añadir</button>
+              </div>
             </li>
           ))}
         </ul>
       </div>
       <div className="order-summary">
-        <h2>Resumen de Orden</h2>
-        <ul>
+        <h2 className='impact-text'><b className='impact-text orange-text'>Nueva</b> Orden</h2>
+        <ul className='summary-list'>
           {orderItems.map((item, index) => (
-            <li key={index}>
-              {item.Nombre} - ${item.Precio} x {item.quantity}
-              <button onClick={() => handleIncreaseQuantity(item)}>+</button>
-              <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+            <li className='summary-item' key={index}>
+              <div className='item-description'>
+                <p>{item.Nombre}</p>
+                <p className='orange-text'>${item.Precio}</p>
+              </div>
+              <div className='item-quantity'>
+                <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => handleIncreaseQuantity(item)}>+</button>
+              </div>
             </li>
           ))}
         </ul>
-        <div>
-          Total: ${getTotalPrice().toFixed(2)}
-        </div>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Comentarios adicionales"
+        <textarea className='commentaries'
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Comentarios adicionales"
         />
         <div className="order-type">
           <button
             onClick={() => setOrderType('mesa')}
             className={orderType === 'mesa' ? 'selected-type' : 'order-type-btn'}
           >
-            Para Mesa
+            Mesa
           </button>
           <button
             onClick={() => setOrderType('recoger')}
             className={orderType === 'recoger' ? 'selected-type' : 'order-type-btn'}
           >
-            Para Recoger
+            Recoger
           </button>
           <button
             onClick={() => setOrderType('domicilio')}
             className={orderType === 'domicilio' ? 'selected-type' : 'order-type-btn'}
           >
-            A Domicilio
+            Domicilio
           </button>
         </div>
-        <button
+        <button className='save-order'
           onClick={handleSaveOrder}
           disabled={!orderType} // Deshabilitar el botón si no se ha seleccionado un tipo de orden
         >
           Guardar Orden
         </button>
+        <div className='total-text'>
+          <span className='impact-text'>Total:</span><span className='impact-text orange-text'>${getTotalPrice().toFixed(2)}</span>
+        </div>
       </div>
     </div>
   );

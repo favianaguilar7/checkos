@@ -22,6 +22,10 @@
   color: white;
 }
 
+.orange-text{
+  color: #FF8730;
+}
+
 .login{
   height: 100vh;
   text-align: center;
@@ -102,16 +106,20 @@
 
 .ordenar-container{
   padding: 2% 4%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 3%;
 }
 
 .menu-header{
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .menu-title{
-  font-size: 34px;
-  width: 30%;
+  font-size: 1.5rem;
 }
 
 .filter-container{
@@ -123,14 +131,16 @@
 .filter-btn{
   background-color: white;
   border-radius: 25px;
-  padding: .7% 1.2%;
+  font-size: 18px;
+  padding: .7% 1.5%;
   border: #FF8730 2px solid;
   color: #FF8730;
 }
 
 .selected-filter{
   border-radius: 25px;
-  padding: .7% 1.2%;
+  font-size: 18px;
+  padding: .7% 1.5%;
   color: white;
   background-color: #FF8730;
   border: #FF8730 2px solid;
@@ -140,4 +150,197 @@
   color: white;
   background-color: #FF8730;
   border: #FF8730 2px solid;
+}
+
+.product-list{
+  display: grid;
+  list-style-type: none;
+  grid-template-columns: repeat(3,1fr);
+  gap: 6% 0;
+}
+
+.product-container{
+  width: 85%;
+}
+
+.product{
+  padding: 10% 20%;
+  border: #FF8730 3px solid;
+  border-radius: 25px;
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.product img{
+  margin: 0 !important;
+}
+
+.add-btn{
+  border-radius: 20px;
+  background-color: transparent;
+  border: 2px solid #FF8730;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 4% 12%;
+  margin-top: 3%;
+}
+
+.add-btn:hover{
+  background-color: #FF8730;
+  color: white;
+}
+
+.order-summary{
+  border: 3px solid #FF8730;
+  border-radius: 25px;
+  padding: 8% 6%;
+}
+
+.order-summary h2{
+  text-align: center;
+  font-size: 27px;
+}
+
+.summary-list{
+  list-style-type: none;
+  padding: 5% 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.summary-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item-description{
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-quantity{
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-quantity button{
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  border: #FF8730 2px solid;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  line-height: 28px;
+}
+
+.item-quantity button:hover{
+  background-color: #FF8730;
+  color: white;
+}
+
+.item-quantity span{
+  vertical-align: middle;
+}
+
+.total-text{
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.commentaries{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 3%;
+  font-size: 18px;
+  border: #FF8730 2px solid;
+  border-radius: 10px;
+  resize: none;
+  margin: 5% 0 0;
+}
+
+.commentaries:focus{
+  outline: none !important;
+  border: #FF8730 2px solid;
+}
+
+.order-type{
+  display: grid;
+  border: 2px solid #FF8730;
+  grid-template-columns: repeat(3,1fr);
+  border-radius: 25px;
+  margin: 7% 0 0;
+}
+
+.order-type-btn{
+  background-color: white;
+  color: #FF8730;
+  border:none;
+  text-align: center;
+  padding: 6% 0;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.order-type-btn:hover{
+  background-color: #FF8730;
+  color: white;
+}
+
+.selected-type{
+  background-color: #FF8730;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  border: 0;
+}
+
+.order-type button:nth-child(2){
+  border: none;
+  border-left: 2px solid #FF8730;
+  border-right: 2px solid #FF8730;
+}
+
+.order-type button:nth-child(1){
+  border-radius: 25px 0 0 25px;
+}
+.order-type button:nth-child(3){
+  border-radius: 0 25px 25px 0;
+}
+
+.save-order{
+  width: 50%;
+  margin: 20px 25%;
+  padding: 2%;
+  background-color: white;
+  color: #FF8730;
+  font-weight: bold;
+  font-size: 15px;
+  border: 2px solid #FF8730;
+  border-radius: 15px;
+}
+
+.save-order:hover{
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #FF8730;
+  color: white;
 }

@@ -17,7 +17,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "client": "PORT=3000 react-scripts start",
+    "client": "react-scripts start",
     "server": "node server.js",
     "start": "react-scripts start"
   },

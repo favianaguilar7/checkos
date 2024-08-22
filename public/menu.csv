@@ -1,13 +1,13 @@
 Nombre,Precio,Categoria,Dia,Promocion,Personalizacion
 Campirana,120.00,Originales,,,
 Doble Cheese Burger,120.00,Originales,,,
-1/4 de Kilo,120.00,Originales,,,
+Un Cuarto de Kilo,120.00,Originales,,,
 Camaron,140.00,Originales,,,
 Pechuga a la Plancha,120.00,Originales,,,
 Alitas,95.00,Variedad,6,85.00,Buffalo.BBQ.Tamarindo.MangoA
 Boneless,95.00,Variedad,1,85.00,Buffalo.BBQ.Tamarindo.MangoA
 Tiras de Pollo,95.00,Variedad,,,
-Papas/Queso,95.00,Variedad,,,Tocino.Chorizo
+Papas con Queso,95.00,Variedad,,,Tocino.Chorizo
 Aros de Cebolla,60.00,Variedad,,,
 Papas Gajo,60.00,Variedad,,,
 Papas,50.00,Variedad,,,
@@ -32,8 +32,8 @@ Hamburguesa con Papas,60.00,Peques,,,
 Nuggets con Papas,70.00,Peques,,,
 Tiras de Pollo P,75.00,Peques,,,
 Jarra,60.00,Bebidas,,,
-1 Litro,35.00,Bebidas,,,
-1/2 Litro,25.00,Bebidas,,,
+Un Litro,35.00,Bebidas,,,
+Medio Litro,25.00,Bebidas,,,
 Refresco 1.5 L,50.00,Bebidas,,,
 Refresco 400,25.00,Bebidas,,,
 Agua Natural,15.00,Bebidas,,,

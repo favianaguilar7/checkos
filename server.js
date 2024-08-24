@@ -55,14 +55,14 @@ app.post('/save-order', (req, res) => {
     const filePath = path.join(dir, fileName);
 
     const orderDetails = `
-Numero de Orden: ${orderNumber}
-Fecha: ${new Date().toLocaleDateString()}
-Hora: ${new Date().toLocaleTimeString()}
-Metodo de Pago: ${paymentMethod}
-Productos:
-${items.map(item => `${item.Nombre} - ${item.Precio} x ${item.quantity}`).join('\n')}
-Total Pagado: ${totalPrice}
-`;
+    Numero de Orden: ${orderNumber}
+    Fecha: ${new Date().toLocaleDateString()}
+    Hora: ${new Date().toLocaleTimeString()}
+    Metodo de Pago: ${paymentMethod}
+    Productos:
+    ${items.map(item => `${item.Nombre} - ${item.Precio} x ${item.quantity}`).join('\n')}
+    Total Pagado: ${totalPrice}
+    `;
 
     fs.appendFile(filePath, orderDetails, (err) => {
         if (err) {
@@ -114,7 +114,7 @@ Comentario: ${comment}
     });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });

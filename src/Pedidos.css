@@ -1,0 +1,149 @@
+.pedidos-container {
+  padding: 20px;
+}
+
+.pedidos-title {
+  color: black;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.pedidos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 10px;
+}
+
+.pedidos-order-card {
+  height:fit-content;
+  background-color: #ffffff;
+  
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #FF8730; /* Naranja */
+}
+
+.pedidos-order-title {
+  margin-bottom: 15px;
+}
+
+.pedidos-order-label {
+  color: #FF8730; /* Naranja */
+  font-weight: bold;
+}
+
+.pedidos-order-number {
+  color: black;
+}
+
+.pedidos-item-list {
+  margin-bottom: 15px;
+  list-style-type: none;
+}
+
+.pedidos-item {
+  font-weight: bold; /* Todo en negritas */
+  display: grid;
+  grid-template-columns: 0.6fr auto 0.4fr;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pedidos-item .nombre {
+  word-break: break-word;
+}
+
+.pedidos-item .cantidad {
+  text-align: center;
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+.pedidos-item .precio {
+  color: black;
+  text-align: right;
+}
+.signo{
+  color: #ff8127;
+}
+.pedidos-total {
+  font-size: 1.3em;
+  margin-left: 60%;
+  margin-bottom: 15px;
+}
+
+.pedidos-comment {
+  background-color: white;
+  border: 1px solid #FF8730; /* Naranja */
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.agregar-button {
+  border-radius: 20px;
+  background-color: transparent;
+  border: 2px solid #FF8730;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 2% 6%;
+  margin: 3%;
+}
+.completar-button {
+  border-radius: 20px;
+  background-color:#FF8730;
+  color: rgb(255, 255, 255);
+  border: 2px solid #FF8730;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 2% 6%;
+  margin: 3%;
+}
+.pedidos-button:hover {
+  background-color: #FF8730;
+}
+
+.agregar-button:hover {
+  background-color: #FF8730;
+}
+.completar-button:hover {
+  background-color: #ff8127;
+}
+.pedidos-button {
+  border-radius: 20px;
+  background-color: transparent;
+  border: 2px solid #FF8730;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 2% 6%;
+  margin: 3%;
+}
+
+.pedidos-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pedidos-overlay-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+}
+
+.pedidos-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

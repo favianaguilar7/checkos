@@ -1,0 +1,43 @@
+
+    Numero de Orden: 6
+    Fecha: 23/8/2024
+    Hora: 17:13:10
+    Metodo de Pago: tarjeta
+    Productos:
+    Campirana - 120.00 x 1
+Doble Cheese - 120.00 x 1
+Un Cuarto de Kilo - 120.00 x 1
+Camaron - 140.00 x 1
+Pechuga a la Plancha - 120.00 x 1
+Tiras de Pollo - 95.00 x 1
+Papas - 50.00 x 1
+    Total Pagado: 765
+    
+    Numero de Orden: 5
+    Fecha: 23/8/2024
+    Hora: 17:20:34
+    Metodo de Pago: efectivo
+    Productos:
+    Un Cuarto de Kilo - 120.00 x 1
+Alitas - 95.00 x 1
+    Total Pagado: 215
+    
+    Numero de Orden: 8
+    Fecha: 23/8/2024
+    Hora: 17:20:42
+    Metodo de Pago: tarjeta
+    Productos:
+    Doble Cheese - 120.00 x 1
+Un Cuarto de Kilo - 120.00 x 1
+    Total Pagado: 240
+    
+    Numero de Orden: 2
+    Fecha: 23/8/2024
+    Hora: 17:34:32
+    Metodo de Pago: efectivo
+    Productos:
+    Doble Cheese Burger - 120.00 x 1
+1/4 de Kilo - 120.00 x 1
+Alitas - 95.00 x 1
+    Total Pagado: 335
+    

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
-import './Comandas.css';
+import { useNavigate } from 'react-router-dom';
+import './Pedidos.css';
 
-const Comandas = () => {
+const Pedidos = () => {
   const [orders, setOrders] = useState([]);
   const [showPaymentOverlay, setShowPaymentOverlay] = useState(false);
   const [showCashOverlay, setShowCashOverlay] = useState(false);
-  const [showCardOverlay, setShowCardOverlay] = useState(false); // Nuevo estado para overlay de tarjeta
+  const [showCardOverlay, setShowCardOverlay] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [cashAmount, setCashAmount] = useState(0);
   const [change, setChange] = useState(0);
-  const [selectedItems, setSelectedItems] = useState({}); // Para almacenar los productos seleccionados
-  const [cardNumber, setCardNumber] = useState('1234567890123456'); // Número de tarjeta predeterminado
+  const [selectedItems, setSelectedItems] = useState({});
+  const [cardNumber, setCardNumber] = useState('1234567890123456');
 
-  const navigate = useNavigate(); // Hook para redirigir
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedOrders = [];
@@ -64,8 +64,6 @@ const Comandas = () => {
 
             if (response.ok) {
                 const result = await response.json();
-
-                // Eliminar la orden del localStorage después de guardarla en el archivo
                 localStorage.removeItem(`orden${selectedOrder.orderNumber}`);
             } else {
             }
@@ -73,7 +71,6 @@ const Comandas = () => {
             console.error('Error:', error);
         }
 
-        // Limpiar estado
         setOrders(orders.filter(order => order.orderNumber !== selectedOrder.orderNumber));
         setSelectedOrder(null);
         setShowPaymentOverlay(false);
@@ -104,22 +101,18 @@ const Comandas = () => {
 
   const handleAddProducts = (order) => {
     if (order) {
-      // Obtener los productos seleccionados
       const updatedItems = order.items.map((item, idx) => {
         const itemId = `${order.orderNumber}_${idx}`;
         return {
           ...item,
-          selected: isItemSelected(itemId) // Añadimos el estado de selección al item
+          selected: isItemSelected(itemId)
         };
       });
   
-      // Eliminar la orden actual del localStorage
       localStorage.removeItem(`orden${order.orderNumber}`);
   
-      // Crear una nueva orden con un nombre basado en `temp`
       const tempOrderNumber = `temp${order.orderNumber}`;
   
-      // Actualizar el localStorage con la nueva orden
       const updatedOrderData = {
         ...order,
         orderNumber: tempOrderNumber,
@@ -127,8 +120,6 @@ const Comandas = () => {
       };
   
       localStorage.setItem(tempOrderNumber, JSON.stringify(updatedOrderData));
-  
-      // Redirigir a la página de Ordenar
       navigate('/ordenar');
     } else {
       alert('No hay una orden seleccionada.');
@@ -136,48 +127,51 @@ const Comandas = () => {
   };
 
   return (
-    <div>
-      <h1>Comandas</h1>
+    <div className="pedidos-container">
+      <h1 className="pedidos-title">Pedidos</h1>
       {orders.length === 0 ? (
         <p>No hay órdenes disponibles.</p>
       ) : (
-        orders.map((order) => (
-          <div key={order.orderNumber} className="order">
-            <h2>Orden {order.orderNumber}</h2>
-            <p><strong>Tipo de Orden:</strong> {order.orderType}</p>
-            <p><strong>Comentario:</strong> {order.comment}</p>
-            <ul>
-              {order.items.map((item, idx) => {
-                // Generar un ID único para cada item en función de la orden y su índice
-                const itemId = `${order.orderNumber}_${idx}`;
-                return (
-                  <li key={itemId}>
-                    {item.Nombre} - ${item.Precio} x {item.quantity}
-                    {item.Personalizacion && <div>{item.Personalizacion}</div>}
+        <div className="pedidos-grid">
+          {orders.map((order) => (
+            <div key={order.orderNumber} className="pedidos-order-card">
+              <h2 className="pedidos-order-title">
+                <span className="pedidos-order-label">Orden</span> <span className="pedidos-order-number">#{order.orderNumber}</span>
+              </h2>
+              <ul className="pedidos-item-list">
+                {order.items.map((item, idx) => (
+                  <li key={`${order.orderNumber}_${idx}`} className="pedidos-item">
+                    <div className="nombre">{item.Nombre}</div>
+                    <div className="cantidad">{item.quantity}</div>
+                    <div className="precio"><span className='signo'>$</span>{item.Precio}</div>
+                    {item.Personalizacion && <div className="personalizacion">{item.Personalizacion}</div>}
                   </li>
-                );
-              })}
-            </ul>
-            <h3>Total: ${order.totalPrice.toFixed(2)}</h3>
-            <button onClick={() => handleAddProducts(order)}>Agregar</button> {/* Botón para agregar productos */}
-            <button onClick={() => handleCompleteOrder(order)}>Completar</button>
-          </div>
-        ))
+                ))}
+              </ul>
+              <h3 className="pedidos-total">Total: ${order.totalPrice.toFixed(2)}</h3>
+              <div className="pedidos-comment">
+                <strong></strong> {order.comment}
+              </div>
+              <button onClick={() => handleAddProducts(order)} className="agregar-button">Agregar</button>
+              <button onClick={() => handleCompleteOrder(order)} className="completar-button">Completar</button>
+            </div>
+          ))}
+        </div>
       )}
 
       {showPaymentOverlay && (
-        <div className="overlay">
-          <div className="overlay-content">
+        <div className="pedidos-overlay">
+          <div className="pedidos-overlay-content">
             <h2>Selecciona el método de pago</h2>
-            <button onClick={() => handlePaymentMethod('efectivo')}>Efectivo</button>
-            <button onClick={() => handlePaymentMethod('tarjeta')}>Tarjeta</button>
+            <button onClick={() => handlePaymentMethod('efectivo')} className="pedidos-button">Efectivo</button>
+            <button onClick={() => handlePaymentMethod('tarjeta')} className="pedidos-button">Tarjeta</button>
           </div>
         </div>
       )}
 
       {showCashOverlay && (
-        <div className="overlay">
-          <div className="overlay-content">
+        <div className="pedidos-overlay">
+          <div className="pedidos-overlay-content">
             <h2>Información del Pago</h2>
             <p>Total: ${selectedOrder.totalPrice.toFixed(2)}</p>
             <label>
@@ -186,21 +180,22 @@ const Comandas = () => {
                 type="number"
                 value={cashAmount}
                 onChange={(e) => handleCashPayment(Number(e.target.value))}
+                className="pedidos-input"
               />
             </label>
             <p>Cambio: ${change.toFixed(2)}</p>
-            <button onClick={handleFinishOrder}>Terminar</button>
+            <button onClick={handleFinishOrder} className="pedidos-button">Terminar</button>
           </div>
         </div>
       )}
 
       {showCardOverlay && (
-        <div className="overlay">
-          <div className="overlay-content">
+        <div className="pedidos-overlay">
+          <div className="pedidos-overlay-content">
             <h2>Información del Pago con Tarjeta</h2>
             <p>Total a pagar: ${selectedOrder.totalPrice.toFixed(2)}</p>
             <p><strong>Número de Tarjeta:</strong> {cardNumber}</p>
-            <button onClick={handleFinishOrder}>Terminar</button>
+            <button onClick={handleFinishOrder} className="pedidos-button">Terminar</button>
           </div>
         </div>
       )}
@@ -208,4 +203,4 @@ const Comandas = () => {
   );
 };
 
-export default Comandas;
+export default Pedidos;

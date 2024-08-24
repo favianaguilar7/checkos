@@ -14,6 +14,7 @@ const Header = () => {
 
   return (
     <header className="header">
+      <img className='logo' src="/img/logo.png"></img>
       <p className='impact-text nav-brand header-comp'>Checko's Burger</p>
       <nav className='header-comp'>
         <ul>

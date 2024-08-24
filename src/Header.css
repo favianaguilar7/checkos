@@ -5,7 +5,13 @@
     padding: .8% 2%;
     background-color: #FF8730;
     border-bottom: 1px solid #dee2e6;
-    text-align: center;
+    text-align: left;
+  }
+
+  .logo{
+    margin-right: 10px;
+    width: 70px; /* Hace que el logo se ajuste al contenedor */
+    height: auto;
   }
   
   .header-comp{

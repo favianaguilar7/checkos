@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './caja.css'; // Importar el archivo de estilos
 
 const Caja = () => {
   const [corteNumber, setCorteNumber] = useState('');
@@ -110,18 +111,19 @@ const Caja = () => {
   };
 
   return (
-    <div>
-      <h1>Caja</h1>
-      <div>
-        <p><strong>Número de Corte:</strong> {corteNumber}</p>
-        <p><strong>Fecha de Apertura:</strong> {openingDate}</p>
-        <p><strong>Hora de Cierre:</strong> {closingTime}</p>
-        <p><strong>Usuario:</strong> {username}</p>
+    <div className="caja-container">
+      <h1 className="caja-title">Caja</h1>
+      <div className="caja-info">
+        <p><span className="caja-label">Número de Corte:</span> {corteNumber}</p>
+        <p><span className="caja-label">Fecha de Apertura:</span> {openingDate}</p>
+        <p><span className="caja-label">Hora de Cierre:</span> {closingTime}</p>
+        <p><span className="caja-label">Usuario:</span> {username}</p>
       </div>
       <div>
         <label>
-          Dinero en Efectivo:
+          <span className="caja-label">Dinero en Efectivo:</span>
           <input
+            className="caja-input"
             type="number"
             value={cash}
             onChange={(e) => setCash(e.target.value)}
@@ -130,8 +132,9 @@ const Caja = () => {
       </div>
       <div>
         <label>
-          Dinero en Tarjeta:
+          <span className="caja-label">Dinero en Tarjeta:</span>
           <input
+            className="caja-input"
             type="number"
             value={card}
             onChange={(e) => setCard(e.target.value)}
@@ -139,20 +142,20 @@ const Caja = () => {
         </label>
       </div>
       <div>
-        <button onClick={handleCalculateDifference}>Continuar</button>
+        <button className="caja-button" onClick={handleCalculateDifference}>Continuar</button>
       </div>
       {diffCash !== '' && (
-        <div>
+        <div className="caja-difference">
           <h3>Diferencia de Dinero en Efectivo: ${diffCash}</h3>
         </div>
       )}
       {diffCard !== '' && (
-        <div>
+        <div className="caja-difference">
           <h3>Diferencia de Dinero en Tarjeta: ${diffCard}</h3>
         </div>
       )}
       {transactions.length > 0 && (
-        <div>
+        <div className="caja-transactions">
           <h3>Detalles de Transacciones:</h3>
           <ul>
             {transactions.map((transaction, index) => (
@@ -166,9 +169,9 @@ const Caja = () => {
           </ul>
         </div>
       )}
-      <div>
+      <div className="caja-comment">
         <label>
-          Comentario:
+          <span className="caja-label">Comentario:</span>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -176,7 +179,7 @@ const Caja = () => {
         </label>
       </div>
       <div>
-        <button onClick={handleFinalize}>Finalizar</button>
+        <button className="caja-button" onClick={handleFinalize}>Finalizar</button>
       </div>
     </div>
   );

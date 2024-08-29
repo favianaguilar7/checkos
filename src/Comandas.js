@@ -12,7 +12,7 @@ const Pedidos = () => {
   const [cashAmount, setCashAmount] = useState(0);
   const [change, setChange] = useState(0);
   const [selectedItems, setSelectedItems] = useState({});
-  const [cardNumber, setCardNumber] = useState('1234567890123456');
+  const [cardNumber, setCardNumber] = useState('123-456-789-0123-456');
 
   const navigate = useNavigate();
 
@@ -173,9 +173,8 @@ const Pedidos = () => {
         <div className="pedidos-overlay">
           <div className="pedidos-overlay-content">
             <h2>Información del Pago</h2>
-            <p>Total: ${selectedOrder.totalPrice.toFixed(2)}</p>
+            <p className='total'>Total: ${selectedOrder.totalPrice.toFixed(2)}</p>
             <label>
-              Cantidad con la que va a pagar:
               <input
                 type="number"
                 value={cashAmount}
@@ -183,7 +182,7 @@ const Pedidos = () => {
                 className="pedidos-input"
               />
             </label>
-            <p>Cambio: ${change.toFixed(2)}</p>
+            <p className='total'>Cambio: ${change.toFixed(2)}</p>
             <button onClick={handleFinishOrder} className="pedidos-button">Terminar</button>
           </div>
         </div>
@@ -192,9 +191,10 @@ const Pedidos = () => {
       {showCardOverlay && (
         <div className="pedidos-overlay">
           <div className="pedidos-overlay-content">
-            <h2>Información del Pago con Tarjeta</h2>
-            <p>Total a pagar: ${selectedOrder.totalPrice.toFixed(2)}</p>
-            <p><strong>Número de Tarjeta:</strong> {cardNumber}</p>
+            <h2>Información del Pago</h2>
+            <p className='total'>Total a pagar: ${selectedOrder.totalPrice.toFixed(2)}</p>
+            <p>Número:</p>
+            <p className='total'>{cardNumber}</p>
             <button onClick={handleFinishOrder} className="pedidos-button">Terminar</button>
           </div>
         </div>

@@ -213,15 +213,15 @@ const Ordenar = () => {
                 {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
                 {item.Personalizacion && (
                   <div>
-                    <select onChange={(e) => handleCustomOptionChange(item, e.target.value)}>
-                      <option value="">Seleccionar opción</option>
+                    <select className='selec' onChange={(e) => handleCustomOptionChange(item, e.target.value)}>
+                    <option value = "" > Selecciona </option>
                       {item.Personalizacion.split('.').map((option, idx) => (
                         <option key={idx} value={option}>{option}</option>
                       ))}
                     </select>
                   </div>
                 )}
-                <button className='add-btn' onClick={() => handleAddToOrder(item)}>Añadir</button>
+                <button className='add-btn' onClick={() => handleAddToOrder(item)}>Agregar</button>
               </div>
             </li>
           ))}
@@ -234,6 +234,7 @@ const Ordenar = () => {
             <li className='summary-item' key={index}>
               <div className='item-description'>
                 <p>{item.Nombre}</p>
+                <p>{item.Personalizacion}</p>
                 <p className='orange-text'>${item.Precio}</p>
               </div>
               <div className='item-quantity'>

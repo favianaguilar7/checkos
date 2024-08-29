@@ -185,8 +185,8 @@
   border-radius: 20px;
   background-color: transparent;
   border: 2px solid #FF8730;
-  font-weight: bold;
-  font-size: 15px;
+  font-weight:bolder;
+  font-size: 20px;
   padding: 4% 12%;
   margin-top: 3%;
 }
@@ -343,4 +343,34 @@
   font-size: 15px;
   background-color: #FF8730;
   color: white;
+}
+
+.selec {
+  appearance: none;
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  font-weight:bold;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  border: 2px solid #FF8730;
+  border-radius: 20px;
+  padding: 2px 24px 2px 5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('../public/img/flecha.png')
+    no-repeat right 10px center;
+  background-size: 12px;
+}
+
+.selec:hover {
+  background-color: #FF8730;
+  color: #ffffff;
+}
+
+select:focus {
+  outline: none;
 }

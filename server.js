@@ -55,13 +55,13 @@ app.post('/save-order', (req, res) => {
     const filePath = path.join(dir, fileName);
 
     const orderDetails = `
-    Numero de Orden: ${orderNumber}
-    Fecha: ${new Date().toLocaleDateString()}
-    Hora: ${new Date().toLocaleTimeString()}
-    Metodo de Pago: ${paymentMethod}
-    Productos:
-    ${items.map(item => `${item.Nombre} - ${item.Precio} x ${item.quantity}`).join('\n')}
-    Total Pagado: ${totalPrice}
+Numero de Orden: ${orderNumber}
+Fecha: ${new Date().toLocaleDateString()}
+Hora: ${new Date().toLocaleTimeString()}
+Metodo de Pago: ${paymentMethod}
+Productos:
+${items.map(item => `${item.Nombre} - ${item.Precio} x ${item.quantity}`).join('\n')}
+Total Pagado: ${totalPrice}
     `;
 
     fs.appendFile(filePath, orderDetails, (err) => {
@@ -88,7 +88,7 @@ app.get('/transactions-today', (req, res) => {
 });
 
 app.post('/save-corte', (req, res) => {
-    const { corteNumber, openingDate, closingTime, username, cash, card, difference, comment } = req.body;
+    const { corteNumber, openingDate, closingTime, username, cash, card, diffCash, diffCard, comment } = req.body;
     const fileName = `orden_${corteNumber}.txt`;
     const filePath = path.join(dir, fileName);
 
@@ -99,7 +99,8 @@ Hora de Cierre: ${closingTime}
 Usuario: ${username}
 Dinero en Efectivo: ${cash}
 Dinero en Tarjeta: ${card}
-Diferencia: ${difference}
+Diferencia en Efectivo: ${diffCash}
+Diferencia en Tarjeta: ${diffCard}
 Comentario: ${comment}
 ==============================
 `;

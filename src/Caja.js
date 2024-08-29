@@ -31,50 +31,72 @@ const Caja = () => {
     try {
       const response = await fetch('http://localhost:3000/transactions-today');
       const transactionsToday = await response.text();
-
+  
       const lines = transactionsToday.split('\n');
       let totalCash = 0;
       let totalCard = 0;
       const transactionDetails = [];
-
+  
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].includes('Numero de Orden:')) {
           const orderNumber = lines[i].replace('Numero de Orden: ', '').trim();
-          const timeLine = lines[i + 2];
-          const time = timeLine.replace('Hora: ', '').trim();
-          const paymentMethodLine = lines[i + 3];
-          const paymentMethod = paymentMethodLine.replace('Metodo de Pago: ', '').trim();
-          const totalLine = lines[i + 6];
-          const total = parseFloat(totalLine.replace('Total Pagado: ', '').trim());
+          
+          let paymentMethod = '';
+          let total = 0;
+          let time = '';
 
-          if (paymentMethod.toLowerCase() === 'efectivo') {
-            totalCash += total;
-          } else if (paymentMethod.toLowerCase() === 'tarjeta') {
-            totalCard += total;
+          for (let j = i + 1; j < lines.length; j++) {
+            if (lines[j].includes('Hora:')) {
+              time = lines[j].replace('Hora: ', '').trim();
+            }
+
+            if (lines[j].includes('Metodo de Pago:')) {
+              paymentMethod = lines[j].replace('Metodo de Pago: ', '').trim();
+            }
+            
+            if (lines[j].includes('Total Pagado:')) {
+              total = parseFloat(lines[j].replace('Total Pagado: ', '').replace(/[^\d.-]/g, ''));
+              break; // Detenemos la búsqueda una vez que encontramos el "Total Pagado"
+            }
+
+            // Si encontramos otro "Numero de Orden", salimos del bucle para procesar la siguiente orden
+            if (lines[j].includes('Numero de Orden:')) {
+              break;
+            }
           }
 
+          if (!isNaN(total)) { // Verifica si el total es un número
+            if (paymentMethod.toLowerCase() === 'efectivo') {
+              totalCash += total;
+            } else if (paymentMethod.toLowerCase() === 'tarjeta') {
+              totalCard += total;
+            }
+          } else {
+            console.warn(`Total inválido encontrado en la orden ${orderNumber}`);
+          }
+  
           transactionDetails.push({
             orderNumber,
             paymentMethod,
-            total,
+            total: !isNaN(total) ? total : 0,
             time,
           });
         }
       }
-
+  
       const cashAmount = parseFloat(cash) || 0;
       const cardAmount = parseFloat(card) || 0;
       const diffCash = cashAmount - totalCash;
       const diffCard = cardAmount - totalCard;
-
+  
       setDiffCash(diffCash.toFixed(2));
       setDiffCard(diffCard.toFixed(2));
-
       setTransactions(transactionDetails);
+  
     } catch (error) {
       console.error('Error al calcular la diferencia:', error);
     }
-  };
+  };  
 
   const handleFinalize = async () => {
     try {
@@ -113,53 +135,51 @@ const Caja = () => {
   return (
     <div className="caja-container">
       <h1 className="caja-title">Caja</h1>
-      <div className="caja-info">
-        <p><span className="caja-label">Número de Corte:</span> {corteNumber}</p>
-        <p><span className="caja-label">Fecha de Apertura:</span> {openingDate}</p>
-        <p><span className="caja-label">Hora de Cierre:</span> {closingTime}</p>
-        <p><span className="caja-label">Usuario:</span> {username}</p>
+      <div className="caja-header">
+        <div>
+        <p><span className="usuario">Usuario:</span> {username}</p>
+        <p><span className="corte-num">Número de Corte:</span> {corteNumber}</p>
+        </div>
+        <div>
+        <p><span className="fecha-hora">Fecha de Apertura:</span> {openingDate}</p>
+        <p><span className="fecha-hora">Hora de Cierre:</span> {closingTime}</p>
+        </div>
       </div>
-      <div>
+      <div className="caja-ingresos">
         <label>
           <span className="caja-label">Dinero en Efectivo:</span>
           <input
-            className="caja-input"
+            className="ingreso-monto"
             type="number"
             value={cash}
             onChange={(e) => setCash(e.target.value)}
           />
         </label>
-      </div>
-      <div>
         <label>
           <span className="caja-label">Dinero en Tarjeta:</span>
           <input
-            className="caja-input"
+            className="ingreso-monto"
             type="number"
             value={card}
             onChange={(e) => setCard(e.target.value)}
           />
         </label>
       </div>
-      <div>
-        <button className="caja-button" onClick={handleCalculateDifference}>Continuar</button>
+      <div className="caja-button-group">
+        <button className="caja-button caja-continuar" onClick={handleCalculateDifference}>Continuar</button>
       </div>
       {diffCash !== '' && (
         <div className="caja-difference">
-          <h3>Diferencia de Dinero en Efectivo: ${diffCash}</h3>
-        </div>
-      )}
-      {diffCard !== '' && (
-        <div className="caja-difference">
-          <h3>Diferencia de Dinero en Tarjeta: ${diffCard}</h3>
+          <h3>Diferencia en Efectivo: <a>${diffCash}</a></h3>
+          <h3>Diferencia en Tarjeta: <a>${diffCard}</a></h3>
         </div>
       )}
       {transactions.length > 0 && (
-        <div className="caja-transactions">
+        <div className="caja-transactions caja-detalles-transacciones">
           <h3>Detalles de Transacciones:</h3>
-          <ul>
+          <ul className="caja-transactions-list">
             {transactions.map((transaction, index) => (
-              <li key={index}>
+              <li key={index} className="caja-transaction-item transaccion">
                 <strong>Número de Orden:</strong> {transaction.orderNumber} <br />
                 <strong>Método de Pago:</strong> {transaction.paymentMethod} <br />
                 <strong>Total Pagado:</strong> ${transaction.total.toFixed(2)} <br />
@@ -169,18 +189,22 @@ const Caja = () => {
           </ul>
         </div>
       )}
-      <div className="caja-comment">
+      {transactions.length > 0 && (
+      <div className="caja-comment caja-comentarios">
         <label>
-          <span className="caja-label">Comentario:</span>
           <textarea
+            className="caja-textarea"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           ></textarea>
         </label>
       </div>
-      <div>
-        <button className="caja-button" onClick={handleFinalize}>Finalizar</button>
+      )}
+      {transactions.length > 0 && (
+      <div className="caja-button-group">
+        <button className="caja-button caja-finalizar" onClick={handleFinalize}>Finalizar</button>
       </div>
+      )}
     </div>
   );
 };

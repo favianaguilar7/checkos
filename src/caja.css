@@ -1,0 +1,187 @@
+/* Estilo general de la página */
+.caja-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Fredoka', sans-serif;
+    margin-top: 20px;
+}
+
+/* Encabezados */
+.caja-header {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    font-weight: bold;
+    font-size: 1.6em;
+    margin-bottom: 2%;
+}
+
+.caja-header div {
+    margin: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.caja-header .corte-num {
+    margin-right: auto;
+}
+
+.caja-header .fecha-hora {
+    text-align: center;
+}
+
+.caja-header .usuario {
+    margin-left: auto;
+    text-align: center;
+}
+
+.caja-header p {
+    padding: 5px;
+}
+
+/* Ingreso de dinero */
+.caja-ingresos {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.caja-ingresos div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+}
+
+.caja-ingresos .caja-label {
+    font-size: 1.6em;
+    margin: 20px;
+}
+
+.caja-ingresos .ingreso-monto {
+    font-size: 1.7em;
+    border: 2px solid #FF8730;
+    border-radius: 8px;
+    padding: 5px 10px;
+    color: #000;
+}
+
+/* Botón continuar */
+.caja-continuar {
+    background-color: #FF8730;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 8px;
+    padding: 10px 40px;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0;
+    transition: background-color 0.3s ease;
+}
+
+.caja-continuar:hover {
+    background-color: #e06b00;
+}
+
+/* Diferencia de efectivo y tarjeta */
+.caja-diferencias {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.caja-diferencias div {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Detalles de ventas */
+.caja-detalle-ventas {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.caja-detalle-ventas textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #FF8730;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1em;
+    color: #000;
+}
+
+/* Detalles de transacciones */
+.caja-detalles-transacciones {
+    width: 80%;
+    background-color: #FFE3D1;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.caja-detalles-transacciones h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.caja-detalles-transacciones .transaccion {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.caja-detalles-transacciones .transaccion span {
+    font-weight: bold;
+}
+
+.caja-detalles-transacciones .transaccion .monto {
+    color: #FF8730;
+}
+
+.caja-difference {
+    display: flex;
+}
+
+.caja-difference h3{
+    padding: 20px;
+}
+.caja-difference a{
+    font-size: 1.2em;
+    color: #e06b00;
+    font-weight: bold;
+}
+
+/* Botón finalizar */
+.caja-finalizar {
+    background-color: #FF8730;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 8px;
+    padding: 10px 40px;
+    cursor: pointer;
+    border: none;
+    margin: 20px 0;
+    transition: background-color 0.3s ease;
+}
+
+.caja-finalizar:hover {
+    background-color: #e06b00;
+}
+
+.caja-textarea {
+    border-radius: 8px;
+    border: 2px solid #FF8730;
+    min-width: 500px;
+    min-height: 100px;
+    font-size: 1.3em;
+}

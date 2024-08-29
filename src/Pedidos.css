@@ -89,6 +89,9 @@
   padding: 2% 6%;
   margin: 3%;
 }
+.agregar-button:hover {
+  color: #ffffff;
+}
 .completar-button {
   border-radius: 20px;
   background-color:#FF8730;
@@ -101,13 +104,15 @@
 }
 .pedidos-button:hover {
   background-color: #FF8730;
+  color: #ffffff;
 }
 
 .agregar-button:hover {
   background-color: #FF8730;
 }
 .completar-button:hover {
-  background-color: #ff8127;
+  background-color: #ff6a00;
+  border: 2px solid #ff6a00;
 }
 .pedidos-button {
   border-radius: 20px;
@@ -140,10 +145,13 @@
 }
 
 .pedidos-input {
-  width: 100%;
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.total {
+  font-size: 25px; 
 }

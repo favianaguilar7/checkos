@@ -11,9 +11,15 @@ const Ordenar = () => {
   const [orderType, setOrderType] = useState(''); // Tipo de orden (mesa, recoger, domicilio)
   const [customOptions, setCustomOptions] = useState({}); // Para almacenar opciones seleccionadas
   const [selectedCategory, setSelectedCategory] = useState(''); // Categoría seleccionada
+  const [ingredients, setIngredients] = useState({});
+const [showOverlay, setShowOverlay] = useState(false);
+const [currentIngredients, setCurrentIngredients] = useState([]);
+const [currentProduct, setCurrentProduct] = useState(null);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchIngredientData();
     const fetchData = async () => {
       const response = await fetch('/menu.csv');
       const reader = response.body.getReader();
@@ -55,28 +61,122 @@ const Ordenar = () => {
   }, [selectedCategory, menuItems]);
 
   const handleAddToOrder = (item) => {
-    const customOption = customOptions[item.Nombre] || '';
-    const itemWithCustomOption = {
-      ...item,
-      Personalizacion: customOption
+    // Obtener datos de ingredientes (suponiendo que fetchIngredientData es una función asincrónica)
+    fetchIngredientData().then(() => {
+      // Verificar si el producto tiene opciones de ingredientes personalizados
+      if (ingredients[item.Nombre]) {
+        // Abrir el overlay de personalización
+        setCurrentProduct(item);
+        setCurrentIngredients(ingredients[item.Nombre].map(ingredient => ({
+          name: ingredient,
+          added: false, // Se inicializa cada ingrediente como no añadido
+          removed: false // Se inicializa cada ingrediente como no removido
+        })));
+        setShowOverlay(true);
+      } else {
+        // Si no tiene personalización, seguir con la lógica normal
+        const customOption = customOptions[item.Nombre] || '';
+        const itemWithCustomOption = {
+          ...item,
+          Personalizacion: customOption
+        };
+    
+        const existingItem = orderItems.find(orderItem => 
+          orderItem.Nombre === itemWithCustomOption.Nombre &&
+          orderItem.Personalizacion === itemWithCustomOption.Personalizacion
+        );
+    
+        if (existingItem) {
+          setOrderItems(orderItems.map(orderItem =>
+            orderItem.Nombre === itemWithCustomOption.Nombre &&
+            orderItem.Personalizacion === itemWithCustomOption.Personalizacion
+              ? { ...orderItem, quantity: orderItem.quantity + 1 }
+              : orderItem
+          ));
+        } else {
+          setOrderItems([...orderItems, { ...itemWithCustomOption, quantity: 1 }]);
+        }
+      }
+    });
+  };
+  
+  // Función para manejar el cambio de estado de un ingrediente
+  const handleIngredientChange = (ingredientName, action) => {
+    setCurrentIngredients(currentIngredients.map(ingredient => 
+      ingredient.name === ingredientName
+        ? { 
+            ...ingredient, 
+            added: action === 'add' ? true : ingredient.added,
+            removed: action === 'remove' ? true : ingredient.removed
+          }
+        : ingredient
+    ));
+  };
+  
+  // Función para finalizar la personalización y agregar el producto a la orden
+  const handleFinalizeCustomization = () => {
+    // Crear una representación de los ingredientes personalizados
+    const personalizationDetails = currentIngredients
+      .map(ingredient => {
+        if (ingredient.added) {
+          return `+${ingredient.name}`;
+        }
+        if (ingredient.removed) {
+          return `-${ingredient.name}`;
+        }
+        return null;
+      })
+      .filter(detail => detail !== null)
+      .join(', ');
+  
+    const customizedItem = {
+      ...currentProduct,
+      Personalizacion: personalizationDetails // Asigna los detalles de personalización a la variable Personalizacion
     };
-
+  
     const existingItem = orderItems.find(orderItem => 
-      orderItem.Nombre === itemWithCustomOption.Nombre &&
-      orderItem.Personalizacion === itemWithCustomOption.Personalizacion
+      orderItem.Nombre === customizedItem.Nombre &&
+      orderItem.Personalizacion === customizedItem.Personalizacion
     );
-
+  
     if (existingItem) {
       setOrderItems(orderItems.map(orderItem =>
-        orderItem.Nombre === itemWithCustomOption.Nombre &&
-        orderItem.Personalizacion === itemWithCustomOption.Personalizacion
+        orderItem.Nombre === customizedItem.Nombre &&
+        orderItem.Personalizacion === customizedItem.Personalizacion
           ? { ...orderItem, quantity: orderItem.quantity + 1 }
           : orderItem
       ));
     } else {
-      setOrderItems([...orderItems, { ...itemWithCustomOption, quantity: 1 }]);
+      setOrderItems([...orderItems, { ...customizedItem, quantity: 1 }]);
+    }
+  
+    setShowOverlay(false);
+  };  
+  
+  const handleIncreaseIngredient = (index) => {
+    const updatedIngredients = [...currentIngredients];
+    updatedIngredients[index].quantity += 1;
+    setCurrentIngredients(updatedIngredients);
+  };
+  
+  const handleDecreaseIngredient = (index) => {
+    const updatedIngredients = [...currentIngredients];
+    if (updatedIngredients[index].quantity > 1) {
+      updatedIngredients[index].quantity -= 1;
+      setCurrentIngredients(updatedIngredients);
     }
   };
+  
+  const handleFinalizeIngredients = () => {
+    const personalizedProduct = {
+      ...currentProduct,
+      Personalizacion: currentIngredients.map(ing => `${ing.name} x${ing.quantity}`).join(', '),
+    };
+    handleAddToOrder(personalizedProduct);
+    setShowOverlay(false);
+    setCurrentIngredients([]);
+    setCurrentProduct(null);
+  };  
 
   const handleCustomOptionChange = (item, option) => {
     setCustomOptions(prevOptions => ({
@@ -117,7 +217,6 @@ const Ordenar = () => {
 
     let newOrderNumber;
     let allOrderNumbers = [];
-
     // Verificar si hay una orden temporal
     const tempOrderKey = Object.keys(localStorage).find(key => key.startsWith('temp'));
     if (tempOrderKey) {
@@ -184,6 +283,30 @@ const Ordenar = () => {
   // Obtener las categorías únicas del menú
   const categories = Array.from(new Set(menuItems.map(item => item.Categoria)));
 
+  const fetchIngredientData = async () => {
+    const response = await fetch('/ingredientes.csv');
+    const reader = response.body.getReader();
+    const result = await reader.read();
+    const decoder = new TextDecoder('utf-8');
+    const csv = decoder.decode(result.value);
+  
+    Papa.parse(csv, {
+      header: false,
+      complete: function (results) {
+        const data = results.data;
+        const ingredientMap = {};
+        for (let i = 0; i < data.length; i += 2) {
+          const productNames = data[i][0].split(',').map(name => name.trim());
+          const productIngredients = data[i + 1];
+          productNames.forEach(name => {
+            ingredientMap[name] = productIngredients;
+          });
+        }
+        setIngredients(ingredientMap);
+      },
+    });
+  };
+
   return (
     <div className="ordenar-container">
       <div className="menu-container">
@@ -207,7 +330,7 @@ const Ordenar = () => {
                 <img 
                   src={`/img/${item.Nombre.toLowerCase().replace(/\s+/g, '')}.png`} 
                   alt={item.Nombre} 
-                  style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: '10px' }}
+                  style={{ width: '100px', height: 'auto', objectFit: 'cover', marginRight: '10px' }}
                 />
                 <p>{item.Nombre} - <b className='orange-text'>$</b>{item.Precio}</p>
                 {item.Dia && item.Dia === selectedDay && <span> - Promoción: {item.Promocion}</span>}
@@ -234,7 +357,9 @@ const Ordenar = () => {
             <li className='summary-item' key={index}>
               <div className='item-description'>
                 <p>{item.Nombre}</p>
-                <p>{item.Personalizacion}</p>
+                {item.Personalizacion.split(', ').map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
                 <p className='orange-text'>${item.Precio}</p>
               </div>
               <div className='item-quantity'>
@@ -280,7 +405,25 @@ const Ordenar = () => {
           <span className='impact-text'>Total:</span><span className='impact-text orange-text'>${getTotalPrice().toFixed(2)}</span>
         </div>
       </div>
+      {showOverlay && (
+        <div className="overlay-ingredientes">
+          <div className="overlay-content-ingredientes">
+            <h2>Personaliza tu {currentProduct.Nombre}</h2>
+            {currentIngredients.map((ingredient, index) => (
+              <div key={index}>
+                <span>{ingredient.name}</span>
+                <div>
+                  <button className='bmas' onClick={() => handleIngredientChange(ingredient.name, 'add')} disabled={ingredient.added}>+</button>
+                  <button className='bmenos' onClick={() => handleIngredientChange(ingredient.name, 'remove')} disabled={ingredient.removed}>-</button>
+                </div>
+              </div>
+            ))}
+            <button className='f-btn' onClick={handleFinalizeCustomization}>Finalizar</button>
+          </div>
+        </div>
+      )}
     </div>
+    
   );
 };
 

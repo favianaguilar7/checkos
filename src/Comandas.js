@@ -144,7 +144,11 @@ const Pedidos = () => {
                     <div className="nombre">{item.Nombre}</div>
                     <div className="cantidad">{item.quantity}</div>
                     <div className="precio"><span className='signo'>$</span>{item.Precio}</div>
-                    {item.Personalizacion && <div className="personalizacion">{item.Personalizacion}</div>}
+                    {item.Personalizacion && <div className="personalizacion">
+                      {item.Personalizacion.split(', ').map((line, index) => (
+                        <p key={index}>{line}</p>
+                      ))}
+                      </div>}
                   </li>
                 ))}
               </ul>

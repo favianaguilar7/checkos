@@ -34,6 +34,7 @@ const Login = () => {
 
   return (
     <div className='login'>
+      <img className='logop' src='./img/logo.png'></img>
       <h1 className="impact-text login-title">Checko's Burger</h1>
       <div className='login-content'>
         <h2 className='white-text login-subtitle'>Iniciar Sesión</h2>

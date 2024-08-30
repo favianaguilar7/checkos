@@ -20,12 +20,21 @@ const Caja = () => {
     const currentTime = new Date().toLocaleTimeString();
     setClosingTime(currentTime);
 
-    const openingDateFromStorage = localStorage.getItem('openingDate');
-    setOpeningDate(openingDateFromStorage || today);
+    function currentTimeD() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0'); // Día con 2 dígitos
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Mes con 2 dígitos (los meses empiezan desde 0)
+      const year = now.getFullYear(); // Año con 4 dígitos
+  
+      return `${day}/${month}/${year}`; // Formato DD/MM/YYYY
+    }
+    setOpeningDate(currentTimeD);
 
     const usernameFromStorage = localStorage.getItem('username');
     setUsername(usernameFromStorage || 'Usuario');
   }, []);
+  
+  
 
   const handleCalculateDifference = async () => {
     try {

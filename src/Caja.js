@@ -135,9 +135,16 @@ const Caja = () => {
       setDiffCard('');
       setComment('');
       setTransactions([]);
-      localStorage.removeItem('openingDate');
+      localStorage.removeItem('username');
     } catch (error) {
       console.error('Error al finalizar el corte:', error);
+    }
+    try {
+      await fetch('http://localhost:3000/close', {
+        method: 'GET',
+      });
+    }catch (error) {
+      
     }
   };
 

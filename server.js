@@ -115,6 +115,48 @@ Comentario: ${comment}
     });
 });
 
+app.get('/close', (req, res) => {
+    res.send('Cerrando servidores...');
+    console.log('Apagando servidores...');
+
+    // Apaga los procesos de npm
+    if (process.platform === 'win32') {
+        // Windows
+        exec('taskkill /f /im node.exe', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`Error cerrando Node.js: ${err}`);
+                return;
+            }
+            console.log(`Resultado Node.js: ${stdout}`);
+        });
+
+        exec('taskkill /f /im cmd.exe', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`Error cerrando frontend React: ${err}`);
+                return;
+            }
+            console.log(`Resultado frontend React: ${stdout}`);
+        });
+    } else {
+        // macOS/Linux
+        exec('pkill -f "npm start"', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`Error cerrando Node.js: ${err}`);
+                return;
+            }
+            console.log(`Resultado Node.js: ${stdout}`);
+        });
+
+        exec('lsof -ti :3000 | xargs kill -9', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`Error cerrando frontend React: ${err}`);
+                return;
+            }
+            console.log(`Resultado frontend React: ${stdout}`);
+        });
+    }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);

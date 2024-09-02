@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const detect = require('detect-port');
 
 const app = express();
 
@@ -120,6 +121,8 @@ app.get('/close', (req, res) => {
     console.log('Apagando servidores...');
 
     // Apaga los procesos de npm
+    const exec = require('child_process').exec;
+
     if (process.platform === 'win32') {
         // Windows
         exec('taskkill /f /im node.exe', (err, stdout, stderr) => {
@@ -157,7 +160,17 @@ app.get('/close', (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+// Detecta y asigna un puerto disponible
+const DEFAULT_PORT = process.env.PORT || 3001;
+detect(DEFAULT_PORT).then((port) => {
+    if (port === DEFAULT_PORT) {
+        app.listen(port, () => {
+            console.log(`Servidor escuchando en el puerto ${port}`);
+        });
+    } else {
+        console.log(`Puerto ${DEFAULT_PORT} está ocupado, usando puerto ${port}`);
+        app.listen(port, () => {
+            console.log(`Servidor escuchando en el puerto ${port}`);
+        });
+    }
 });

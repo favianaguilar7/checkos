@@ -8,6 +8,7 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "cors": "^2.8.5",
+    "detect-port": "^1.6.1",
     "express": "^4.19.2",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
@@ -18,7 +19,7 @@
     "webpack-dev-server": "^4.15.2"
   },
   "scripts": {
-    "client": "react-scripts start",
+    "client": "node start-client.js",
     "server": "node server.js",
     "start": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -46,6 +47,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
   }
 }
